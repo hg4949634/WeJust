@@ -1,11 +1,21 @@
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require('discord.js');
-
+require("dotenv").config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-const TOKEN = "MTQxNjExNTE2MjQ1NjI2MDYwOA.Gr3yyB.GC2KscPfGKYU6GSvp_LOtxIFnYWMWJNq8b1IO8";          // Developer Portal에서 발급받은 토큰
-const CLIENT_ID = "1416115162456260608";  // Developer Portal → General Information
-const GUILD_ID = "928485420487036979";    // 테스트할 디스코드 서버 ID
-
+var connection = database.createConnection({
+    TOKEN: process.env.TOKEN,
+    CLIENT_ID: process.env.CLIENT_ID,
+    GUILD_ID: process.env.GUILD_ID
+});
+connection.connect(function (err) {
+    if (err) {
+        console.error('connection error');
+        console.error(err);
+        throw err;
+    } else {
+        console.log("DB connected");
+    }
+})
 // /안녕 명령어 정의
 const commands = [
   new SlashCommandBuilder()
