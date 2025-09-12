@@ -2,20 +2,9 @@ const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require
 require("dotenv").config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-var connection = database.createConnection({
-    TOKEN: process.env.TOKEN,
-    CLIENT_ID: process.env.CLIENT_ID,
-    GUILD_ID: process.env.GUILD_ID
-});
-connection.connect(function (err) {
-    if (err) {
-        console.error('connection error');
-        console.error(err);
-        throw err;
-    } else {
-        console.log("DB connected");
-    }
-})
+
+var TOKEN, CLIENT_ID, GUILD_ID;
+
 // /안녕 명령어 정의
 const commands = [
   new SlashCommandBuilder()
@@ -74,4 +63,4 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login(TOKEN);
+client.login(process.env.TOKEN);
