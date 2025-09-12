@@ -1,7 +1,11 @@
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require('discord.js');
 require("dotenv").config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.get("/", (req, res) => res.send("Bot is running!"));
+app.listen(PORT, () => console.log(`✅ Web server on port ${PORT}`));
 
 var TOKEN, CLIENT_ID, GUILD_ID;
 
