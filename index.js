@@ -43,7 +43,8 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 (async () => {
   try {
     console.log('슬래시 명령어 등록 시작...');
-
+    if (process.env.DEPLOY_GLOBAL === "false") {
+      
     // 🔹 테스트 서버 길드 등록
     for (const guildID of guildIDs) {
       if (!/^\d{17,19}$/.test(guildID)) {
@@ -65,7 +66,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
       );
       console.log(`테스트 서버(${guildID}) 새 길드 명령어 등록 완료`);
     }
-
+  }
     // 🔹 전역 등록 (배포용, DEPLOY_GLOBAL=true)
     if (process.env.DEPLOY_GLOBAL === "true") {
       await rest.put(
