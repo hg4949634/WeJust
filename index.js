@@ -47,7 +47,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
     );
     console.log('전역 명령어 등록 완료!');
     const guildIDs = process.env.GUILD_ID.split(",");
-    console.log(guildIDs);
+    console.log(GUILD_ID);
     for (const guildID of guildIDs) {
       await rest.put(
         Routes.applicationGuildCommands(CLIENT_ID, guildID.trim()),
