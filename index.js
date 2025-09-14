@@ -45,7 +45,16 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
       Routes.applicationCommands(CLIENT_ID),
       { body: commands },
     );
-    console.log('✅ 슬래시 명령어 등록 완료!');
+    console.log('전역 명령어 등록 완료!');
+    const guildIDs = process.env.GUILD_ID.split(",");
+    for (const guildID of guildIDs) {
+      await rest.put(
+        Routes.applicationGuildCommands(CLIENT_ID, guildID.trim()),
+        { body: commands },
+      );
+      console.log(`테스트서버ID(${guildID})에 명령어 등록 완료!`);
+    }
+    console.log('모든 길드 명령어 등록 완료!');
   } catch (error) {
     console.error(error);
   }
