@@ -41,12 +41,19 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 (async () => {
   try {
     console.log('슬래시 명령어 등록 시작...');
-    const guildIDs = process.env.GUILD_ID.split(",");
-    //테스트 서버 길드 등록
-    if (GUILD_ID.length > 0) {  
+    const guildIDs = process.env.GUILD_ID
+      ? process.env.GUILD_ID.split(",").map(id => id.trim())
+      : [];
+
+    // 테스트 서버 길드 등록
+    if (guildIDs.length > 0) {  
       for (const guildID of guildIDs) {
+        if (!/^\d{18}$/.test(guildID)) {
+          console.warn(`잘못된 길드 ID 무시됨: ${guildID}`);
+          continue;
+        }
         await rest.put(
-          Routes.applicationGuildCommands(CLIENT_ID, guildID.trim()),
+          Routes.applicationGuildCommands(CLIENT_ID, guildID),
           { body: commands }
         );
         console.log(`테스트 서버(${guildID})에 길드 명령어 등록 완료`);
