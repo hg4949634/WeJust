@@ -7,8 +7,9 @@ const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => res.send("Bot is running!"));
 app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
 
-var TOKEN, GUILD_ID;
-var CLIENT_ID = "1416115162456260608";
+const TOKEN = process.env.TOKEN;
+const GUILD_ID = process.env.GUILD_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 
 //명령어 정의
 const commands = [
@@ -41,7 +42,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
   try {
     console.log('슬래시 명령어 등록 중...');
     await rest.put(
-      Routes.applicationCommands('1416115162456260608'),
+      Routes.applicationCommands(CLIENT_ID),
       { body: commands },
     );
     console.log('✅ 슬래시 명령어 등록 완료!');
