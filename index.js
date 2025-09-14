@@ -5,11 +5,11 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => res.send("Bot is running!"));
-app.listen(PORT, () => console.log(`✅ Web server on port ${PORT}`));
+app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
 
 var TOKEN, CLIENT_ID, GUILD_ID;
 
-// /안녕 명령어 정의
+//명령어 정의
 const commands = [
   new SlashCommandBuilder()
     .setName('안녕')
@@ -27,7 +27,10 @@ const commands = [
             .setRequired(true)),
   new SlashCommandBuilder()
     .setName('준성아')
-    .setDescription('뭔지 알잖아요')
+    .setDescription('뭔지 알잖아요'),
+  new SlashCommandBuilder()
+    .setName('젠장')
+    .setDescription('또 그녀석 때문인가...')
 ].map(command => command.toJSON());
 
 // REST API로 디스코드 서버에 명령어 등록
@@ -35,7 +38,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 (async () => {
   try {
-    console.log('📌 슬래시 명령어 등록 중...');
+    console.log('슬래시 명령어 등록 중...');
     await rest.put(
       Routes.applicationCommands(CLIENT_ID),
       { body: commands },
@@ -54,7 +57,7 @@ client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === '안녕') {
-    await interaction.reply('안녕하세요! 🤖');
+    await interaction.reply('안녕하세요!');
   }
 
   if (interaction.commandName === '더하기') {
@@ -64,6 +67,9 @@ client.on('interactionCreate', async interaction => {
   }
   if (interaction.commandName === '준성아') {
     await interaction.reply('그만봐');
+  }
+  if (interaction.commandName === '젠장') {
+    await interaction.reply('또 임채민 때문이야');
   }
 });
 
