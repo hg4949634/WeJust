@@ -40,26 +40,35 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 (async () => {
   try {
-    console.log('슬래시 명령어 등록 중...');
-    await rest.put(
-      Routes.applicationCommands(CLIENT_ID),
-      { body: commands },
-    );
-    console.log('전역 명령어 등록 완료!');
-    const guildIDs = process.env.GUILD_ID.split(",");
-    console.log(GUILD_ID);
-    for (const guildID of guildIDs) {
-      await rest.put(
-        Routes.applicationGuildCommands(CLIENT_ID, guildID.trim()),
-        { body: commands },
-      );
-      console.log(`테스트서버ID(${guildID})에 명령어 등록 완료!`);
+    console.log('슬래시 명령어 등록 시작...');
+
+    //테스트 서버 길드 등록
+    if (GUILD_IDS.length > 0) {
+      for (const guildID of GUILD_IDS) {
+        await rest.put(
+          Routes.applicationGuildCommands(CLIENT_ID, guildID),
+          { body: commands }
+        );
+        console.log(`테스트 서버(${guildID})에 길드 명령어 등록 완료`);
+      }
     }
-    console.log('모든 길드 명령어 등록 완료!');
+
+    //전역 등록 (배포용, DEPLOY_GLOBAL=true 환경 변수 필요)
+    if (process.env.DEPLOY_GLOBAL === "true") {
+      await rest.put(
+        Routes.applicationCommands(CLIENT_ID),
+        { body: commands }
+      );
+      console.log('전역 명령어 등록 완료');
+    }
+
+    console.log('모든 명령어 등록 완료!');
+
   } catch (error) {
     console.error(error);
   }
 })();
+
 
 client.on('ready', () => {
   console.log(`✅ 로그인됨: ${client.user.tag}`);
