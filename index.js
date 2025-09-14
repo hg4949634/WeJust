@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => res.send("Bot is running!"));
 app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
 
-var TOKEN, CLIENT_ID, GUILD_ID;
+var TOKEN, GUILD_ID;
+var CLIENT_ID = "1416115162456260608";
 
 //명령어 정의
 const commands = [
