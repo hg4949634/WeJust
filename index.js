@@ -82,30 +82,30 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
   }
 })();
 
-
-
-client.on('clientReady', () => {
-  console.log(`로그인됨: ${client.user.tag}`);
-});
-
+// ----------------- Interaction 처리 -----------------
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === '안녕') {
-    await interaction.reply('안녕하세요!');
-  }
+  try {
+    // 3초 이상 처리 지연 가능 시 defer
+    await interaction.deferReply();
 
-  if (interaction.commandName === '더하기') {
-    const a = interaction.options.getInteger('a');
-    const b = interaction.options.getInteger('b');
-    await interaction.reply(`결과: ${a + b}`);
-  }
-  if (interaction.commandName === '준성아') {
-    await interaction.reply('그만봐');
-  }
-  if (interaction.commandName === '젠장') {
-    await interaction.reply('또 임채민 때문이야');
+    if (interaction.commandName === '안녕') {
+      await interaction.editReply('안녕하세요!');
+    } else if (interaction.commandName === '더하기') {
+      const a = interaction.options.getInteger('a');
+      const b = interaction.options.getInteger('b');
+      await interaction.editReply(`결과: ${a + b}`);
+    } else if (interaction.commandName === '준성아') {
+      await interaction.editReply('그만봐');
+    } else if (interaction.commandName === '젠장') {
+      await interaction.editReply('또 임채민 때문이야');
+    } else {
+      await interaction.editReply('알 수 없는 명령어입니다.');
+    }
+  } catch (err) {
+    console.error('Interaction 처리 중 오류:', err);
   }
 });
 
-client.login(process.env.TOKEN);
+client.login(TOKEN);
