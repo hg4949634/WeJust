@@ -44,6 +44,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
     //테스트 서버 길드 등록
     if (GUILD_ID.length > 0) {
+      console.log(GUILD_ID);
       for (const guildID of GUILD_ID) {
         await rest.put(
           Routes.applicationGuildCommands(CLIENT_ID, guildID),
