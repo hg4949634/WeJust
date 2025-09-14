@@ -46,6 +46,8 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
     if (GUILD_ID.length > 0) {  
       for (const guildID of GUILD_ID) {
         console.log(guildID.trim());
+        console.log(guildID);
+        console.log(GUILD_ID);
         await rest.put(
           Routes.applicationGuildCommands(CLIENT_ID, guildID.trim()),
           { body: commands }
