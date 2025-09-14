@@ -8,8 +8,10 @@ app.get("/", (req, res) => res.send("Bot is running!"));
 app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
 
 const TOKEN = process.env.TOKEN;
-const GUILD_ID = process.env.GUILD_ID;
 const CLIENT_ID = process.env.CLIENT_ID;
+const guildIDs = process.env.GUILD_ID
+  ? [...new Set(process.env.GUILD_ID.split(",").map(id => id.trim()))]
+  : [];
 
 //명령어 정의
 const commands = [
@@ -41,25 +43,30 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 (async () => {
   try {
     console.log('슬래시 명령어 등록 시작...');
-    const guildIDs = process.env.GUILD_ID
-      ? process.env.GUILD_ID.split(",").map(id => id.trim())
-      : [];
 
-    // 테스트 서버 길드 등록
-    if (guildIDs.length > 0) {  
-      for (const guildID of guildIDs) {
-        if (!/^\d{17,19}$/.test(guildID)) {
-          console.warn(`잘못된 길드 ID 무시됨: ${guildID}`);
-          continue;
-        }
-        await rest.put(
-          Routes.applicationGuildCommands(CLIENT_ID, guildID),
-          { body: commands }
-        );
-        console.log(`테스트 서버(${guildID})에 길드 명령어 등록 완료`);
+    // 🔹 테스트 서버 길드 등록
+    for (const guildID of guildIDs) {
+      if (!/^\d{17,19}$/.test(guildID)) {
+        console.warn(`잘못된 길드 ID 무시됨: ${guildID}`);
+        continue;
       }
+
+      // 기존 길드 명령어 초기화
+      await rest.put(
+        Routes.applicationGuildCommands(CLIENT_ID, guildID),
+        { body: [] }
+      );
+      console.log(`테스트 서버(${guildID}) 기존 명령어 초기화`);
+
+      // 새 명령어 등록
+      await rest.put(
+        Routes.applicationGuildCommands(CLIENT_ID, guildID),
+        { body: commands }
+      );
+      console.log(`테스트 서버(${guildID}) 새 길드 명령어 등록 완료`);
     }
-    //전역 등록 (배포용, DEPLOY_GLOBAL=true 환경 변수 필요)
+
+    // 🔹 전역 등록 (배포용, DEPLOY_GLOBAL=true)
     if (process.env.DEPLOY_GLOBAL === "true") {
       await rest.put(
         Routes.applicationCommands(CLIENT_ID),
@@ -69,14 +76,14 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
     }
 
     console.log('모든 명령어 등록 완료!');
-
   } catch (error) {
     console.error(error);
   }
 })();
 
 
-client.on('ready', () => {
+
+client.on('clientReady', () => {
   console.log(`✅ 로그인됨: ${client.user.tag}`);
 });
 
