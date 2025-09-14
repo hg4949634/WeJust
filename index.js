@@ -41,7 +41,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
   try {
     console.log('슬래시 명령어 등록 중...');
     await rest.put(
-      Routes.applicationCommands(CLIENT_ID),
+      Routes.applicationCommands('1416115162456260608'),
       { body: commands },
     );
     console.log('✅ 슬래시 명령어 등록 완료!');
