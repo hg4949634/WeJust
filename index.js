@@ -84,7 +84,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 
 client.on('clientReady', () => {
-  console.log(`✅ 로그인됨: ${client.user.tag}`);
+  console.log(`로그인됨: ${client.user.tag}`);
 });
 
 client.on('interactionCreate', async interaction => {
