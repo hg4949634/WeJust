@@ -1,5 +1,5 @@
 {
-  "name": "unknown-project",
+  "name": "wejust",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,6 @@
   "dependencies": {
     "discord.js": "^14.22.1",
     "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "save": "^2.9.0"
+    "express": "^5.1.0"
   }
 }
