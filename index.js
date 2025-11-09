@@ -56,10 +56,12 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
     for (const guildID of GUILD_IDS) {
       console.log(` [${guildID}] 길드 명령어 등록 시도 중...`);
       try {
+        console.log("요청 전송 시작");
         const data = await rest.put(
           Routes.applicationGuildCommands(CLIENT_ID, guildID),
           { body: commands }
         );
+        console.log("요청 완료")
         console.log(`✅ [${guildID}] 길드 명령어 등록 성공 (${data.length}개)`);
       } catch (err) {
         console.error(` [${guildID}] 등록 실패`);
