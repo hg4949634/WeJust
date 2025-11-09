@@ -1,3 +1,10 @@
+// Temporary Checking
+console.log("환경변수 확인:", {
+  TOKEN: !!process.env.TOKEN,
+  CLIENT_ID: process.env.CLIENT_ID,
+  GUILD_ID: process.env.GUILD_ID
+});
+// Starting
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require('discord.js');
 require("dotenv").config();
 const express = require("express");
