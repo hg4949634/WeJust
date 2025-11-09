@@ -37,6 +37,20 @@ const commands = [
     .setName('젠장')
     .setDescription('또 그녀석 때문인가...')
 ].map(cmd => cmd.toJSON());
+//temp
+for (const guildID of GUILD_IDS) {
+  console.log(`📡 ${guildID}에 명령어 등록 시도중...`);
+  try {
+    const data = await rest.put(
+      Routes.applicationGuildCommands(CLIENT_ID, guildID),
+      { body: commands }
+    );
+    console.log(`✅ ${guildID} 등록 완료 (${data.length}개 명령어)`);
+  } catch (err) {
+    console.error(`❌ ${guildID} 등록 실패:`, err);
+  }
+}
+
 // registering commands
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 (async () => {
